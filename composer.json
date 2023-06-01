@@ -14,8 +14,7 @@
       "email": "celebron.ru@gmail.com"
     }
   ],
-  "minimum-stability": "dev",
-  "prefer-stable": true,
+  "minimum-stability": "stable",
   "repositories": [
     {
       "type": "composer",
