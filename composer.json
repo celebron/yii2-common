@@ -33,5 +33,6 @@
       "yiisoft/yii2-composer": true
     }
   },
-  "minimum-stability": "dev"
+  "minimum-stability": "dev",
+  "prefer-stable": true
 }
