@@ -27,14 +27,14 @@ class Token extends BaseObject
 
     public function __construct (array $data, array $config = [])
     {
-        parent::__construct($config);
         \Yii::debug($data, static::class);
         $this->accessToken = ArrayHelper::remove($data, 'access_token');
         $this->expiresIn = ArrayHelper::remove($data, 'expires_in');
         $this->refreshToken = ArrayHelper::remove($data, 'refresh_token');
         $this->tokenType = ArrayHelper::remove($data, 'token_type');
-        $this->generateTime = ArrayHelper::remove($data, 'generate_time',time());
+        $this->generateTime = ArrayHelper::remove($data, 'generate_time', time());
         $this->data = $data;
+        parent::__construct($config);
     }
 
 
@@ -69,7 +69,6 @@ class Token extends BaseObject
 
         throw new NotFoundHttpException("File '{$file}' not exists");
     }
-
 
     public function toArray() : array
     {
