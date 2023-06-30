@@ -18,10 +18,6 @@
     {
       "type": "composer",
       "url": "https://asset-packagist.org"
-    },
-    {
-      "type": "github",
-      "url": "https://github.com/celebron/yii2-common.git"
     }
   ],
   "require-dev": {
