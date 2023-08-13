@@ -3,6 +3,7 @@
 namespace Celebron\common;
 
 use yii\base\BaseObject;
+use yii\base\InvalidArgumentException;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 
@@ -11,13 +12,14 @@ use yii\web\NotFoundHttpException;
 /**
  * Стандартные данные при получении Access token из OAuth2 сервера
  * @property-read bool $isExpires
+ * @property-read string $json
  * @property-read int $expiresTime
  */
-class Token extends BaseObject implements \Stringable
+class Token extends BaseObject implements \Stringable, TokenInterface
 {
     /** @var string - Токен доступа */
     public readonly string $accessToken;
-    /** @var int - Время существования токина в секундах  */
+    /** @var int - Время существования токена в секундах  */
     public readonly int $expiresIn;
     /** @var string|null - Токен для регенерации токена */
     public readonly ?string $refreshToken;
@@ -52,7 +54,7 @@ class Token extends BaseObject implements \Stringable
     }
 
     /**
-     * Вычисление времени действия токина относительно времени сервера
+     * Вычисление времени действия токена относительно времени сервера
      * @return int
      */
     public function getExpiresTime():int
@@ -68,14 +70,13 @@ class Token extends BaseObject implements \Stringable
     public function createFile (string $file):int|false
     {
         $file = \Yii::getAlias($file);
-        return file_put_contents($file, $this->__toString(), LOCK_EX);
+        return file_put_contents($file, $this->getJson(), LOCK_EX);
     }
 
     /**
      * Открытие файла со значениями
      * @param string $file - имя файла (можно использовать @)
      * @return static
-     * @throws NotFoundHttpException
      */
     public static function openFile (string $file): static
     {
@@ -86,9 +87,13 @@ class Token extends BaseObject implements \Stringable
             return new static($data);
         }
 
-        throw new NotFoundHttpException("File '{$file}' not exists");
+        throw new InvalidArgumentException("File '{$file}' not exists");
     }
 
+    /**
+     * Получение данных в виде массива
+     * @return array
+     */
     public function toArray() : array
     {
         $data = [
@@ -102,8 +107,17 @@ class Token extends BaseObject implements \Stringable
         return ArrayHelper::merge($data, $this->data);
     }
 
-    public function __toString ()
+    /**
+     * Получение данных в виде JSON
+     * @return string
+     */
+    public function getJson() : string
     {
         return Json::encode($this->toArray());
+    }
+
+    public function __toString ()
+    {
+        return $this->getJson();
     }
 }
