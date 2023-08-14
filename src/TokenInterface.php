@@ -4,6 +4,9 @@ namespace Celebron\common;
 
 interface TokenInterface
 {
-    public function toArray():array;
-    public function getJson():string;
+    public function toJson():string;
+    public function getAccessToken():?string;
+    public function getExpireIn():int;
+    public function getRefreshToken():?string;
+    public function getTokenType():?string;
 }
