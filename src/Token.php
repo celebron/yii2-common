@@ -30,10 +30,9 @@ class Token extends BaseObject implements \Stringable, TokenInterface
     public function __construct (
         public array $data,
         ?array $compare = null,
-        array $config = []
     ) {
-        parent::__construct($config);
         $this->compare = $compare ?? $this->defaultCompare();
+        parent::__construct([]);
     }
 
     protected function defaultCompare():array
@@ -53,7 +52,7 @@ class Token extends BaseObject implements \Stringable, TokenInterface
      * @return mixed
      * @throws \Exception
      */
-    protected function property(string $key, mixed $default) : mixed
+    public function property(string $key, mixed $default) : mixed
     {
         $field = $this->compare[$key];
         return ArrayHelper::getValue($this->data, $field, $default);
