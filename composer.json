@@ -1,6 +1,6 @@
 {
-  "name": "celebron/yii2-celebron-common",
-  "keywords": ["yii2", "extension","celebron"],
+  "name": "celebron/yii2-celebron-oauth2token",
+  "keywords": ["celebron", "oauth2"],
   "license": "Apache-2.0",
   "autoload": {
     "psr-4": {

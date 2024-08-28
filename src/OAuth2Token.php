@@ -6,7 +6,7 @@ use InvalidArgumentException;
 use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Json\Json;
 
-class Token  implements \Stringable, TokenInterface
+class OAuth2Token  implements \Stringable, OAuth2TokenInterface
 {
     public const string PROPERTY_ACCESS_TOKEN = 'accessToken';
     public const string PROPERTY_EXPIRE_IN = 'expiresIn';

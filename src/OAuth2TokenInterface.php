@@ -2,7 +2,7 @@
 
 namespace Celebron\common;
 
-interface TokenInterface
+interface OAuth2TokenInterface
 {
     /**
      * Выводить результат в виде валидного JSON
