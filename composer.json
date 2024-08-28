@@ -1,6 +1,5 @@
 {
   "name": "celebron/yii2-celebron-common",
-  "type": "yii2-extension",
   "keywords": ["yii2", "extension","celebron"],
   "license": "Apache-2.0",
   "autoload": {
@@ -25,13 +24,9 @@
 
   },
   "require": {
-    "yiisoft/yii2": "^2.0",
-    "php": "^8.2"
-  },
-  "config": {
-    "allow-plugins": {
-      "yiisoft/yii2-composer": true
-    }
+    "php": "^8.3",
+    "yiisoft/arrays": "^3.1",
+    "yiisoft/json": "^1.0"
   },
   "minimum-stability": "stable",
   "prefer-stable": true

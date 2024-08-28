@@ -2,11 +2,9 @@
 
 namespace Celebron\common;
 
-use yii\base\BaseObject;
-use yii\base\InvalidArgumentException;
-use yii\helpers\ArrayHelper;
-use yii\helpers\Json;
-
+use InvalidArgumentException;
+use Yiisoft\Arrays\ArrayHelper;
+use Yiisoft\Json\Json;
 
 /**
  *
@@ -18,21 +16,21 @@ use yii\helpers\Json;
  * @property-read int $expiresTime
  * @property-read null|string $refreshToken
  */
-class Token extends BaseObject implements \Stringable, TokenInterface
+class Token  implements \Stringable, TokenInterface
 {
-    public const PROPERTY_ACCESS_TOKEN = 'accessToken';
-    public const PROPERTY_EXPIRE_IN = 'expiresIn';
-    public const PROPERTY_REFRESH_TOKEN = 'refreshToken';
-    public const PROPERTY_TOKEN_TYPE = 'tokenType';
-    public const PROPERTY_GENERATE_TIME = 'generateTime';
+    public const string PROPERTY_ACCESS_TOKEN = 'accessToken';
+    public const string PROPERTY_EXPIRE_IN = 'expiresIn';
+    public const string PROPERTY_REFRESH_TOKEN = 'refreshToken';
+    public const string PROPERTY_TOKEN_TYPE = 'tokenType';
+    public const string PROPERTY_GENERATE_TIME = 'generateTime';
     public int $timeout = 3600 * 24;
     public readonly array $compare;
     public function __construct (
         public array $data,
         ?array $compare = null,
-    ) {
+    )
+    {
         $this->compare = $compare ?? $this->defaultCompare();
-        parent::__construct([]);
     }
 
     protected function defaultCompare():array
@@ -58,26 +56,41 @@ class Token extends BaseObject implements \Stringable, TokenInterface
         return ArrayHelper::getValue($this->data, $field, $default);
     }
 
+    /**
+     * @throws \Exception
+     */
     public function getAccessToken():?string
     {
         return $this->property(self::PROPERTY_ACCESS_TOKEN, null);
     }
 
+    /**
+     * @throws \Exception
+     */
     public function getExpireIn():int
     {
         return $this->property(self::PROPERTY_EXPIRE_IN, 0);
     }
 
+    /**
+     * @throws \Exception
+     */
     public function getRefreshToken():?string
     {
         return $this->property(self::PROPERTY_REFRESH_TOKEN, null);
     }
 
+    /**
+     * @throws \Exception
+     */
     public function getTokenType():?string
     {
         return $this->property(self::PROPERTY_TOKEN_TYPE, null);
     }
 
+    /**
+     * @throws \Exception
+     */
     public function getGenerateTime():int
     {
         return $this->property(self::PROPERTY_GENERATE_TIME, time());
@@ -85,6 +98,7 @@ class Token extends BaseObject implements \Stringable, TokenInterface
 
     /**
      * @return bool
+     * @throws \Exception
      */
     public function getIsExpires (): bool
     {
@@ -94,6 +108,7 @@ class Token extends BaseObject implements \Stringable, TokenInterface
     /**
      * Вычисление времени действия токена относительно времени сервера
      * @return int
+     * @throws \Exception
      */
     public function getExpiresTime():int
     {
@@ -102,12 +117,11 @@ class Token extends BaseObject implements \Stringable, TokenInterface
 
     /**
      * Создания файлы со значениями полученные OAuth2 сервера
-     * @param string $file - имя файла (можно использовать @)
+     * @param string $file
      * @return int|false
      */
-    public function createFile (string $file):int|false
+    public function createFile (string $file) : int|false
     {
-        $file = \Yii::getAlias($file);
         return file_put_contents($file, $this->toJson(), LOCK_EX);
     }
 
@@ -115,12 +129,11 @@ class Token extends BaseObject implements \Stringable, TokenInterface
      * Открытие файла со значениями
      * @param string $file - имя файла (можно использовать @)
      * @return static
+     * @throws \JsonException
      */
     public static function openFile (string $file): static
     {
-        $file = \Yii::getAlias($file);
         if (file_exists($file)) {
-            \Yii::info("Open file {$file}.", static::class);
             $data = Json::decode(file_get_contents($file));
             return new static($data);
         }
@@ -131,13 +144,17 @@ class Token extends BaseObject implements \Stringable, TokenInterface
     /**
      * Получение данных в виде JSON
      * @return string
+     * @throws \JsonException
      */
     public function toJson() : string
     {
         return Json::encode($this->data);
     }
 
-    public function __toString ()
+    /**
+     * @throws \JsonException
+     */
+    public function __toString (): string
     {
         return $this->toJson();
     }
