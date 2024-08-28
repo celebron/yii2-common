@@ -6,16 +6,6 @@ use InvalidArgumentException;
 use Yiisoft\Arrays\ArrayHelper;
 use Yiisoft\Json\Json;
 
-/**
- *
- * @property-read int $expireIn
- * @property-read null|string $tokenType
- * @property-read null|string $accessToken
- * @property-read int $generateTime
- * @property-read bool $isExpires
- * @property-read int $expiresTime
- * @property-read null|string $refreshToken
- */
 class Token  implements \Stringable, TokenInterface
 {
     public const string PROPERTY_ACCESS_TOKEN = 'accessToken';
